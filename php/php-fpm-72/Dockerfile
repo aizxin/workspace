@@ -60,13 +60,17 @@ RUN pecl update-channels pecl.php.net &&\
         imagick \
         redis \
         yaf
+#安装hiredis扩展
+RUN cd /home \
+    && git clone https://github.com/redis/hiredis.git \
+    && cd hiredis && make && make install && ldconfig
 
 # 安装 Swoole
 RUN cd /home \
     && git clone https://gitee.com/swoole/swoole.git \
     && cd swoole \
     && phpize \
-    && ./configure --enable-coroutine --with-php-config=/usr/local/bin/php-config \
+    && ./configure --enable-coroutine --enable-async-redis --with-php-config=/usr/local/bin/php-config \
     && make \
     && make install \
     && echo "extension=swoole.so" > /usr/local/etc/php/conf.d/swoole.ini

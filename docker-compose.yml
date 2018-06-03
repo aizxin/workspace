@@ -23,6 +23,8 @@ services:
       context: ./php/php-fpm-72/
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - "9501:9501"
     links:
      - "mysql:mysql"
      - "redis:redis"
@@ -31,6 +33,7 @@ services:
       - ./php/php-fpm-72/php.ini:/usr/local/etc/php/php.ini:ro
       - ./logs/php-fpm:/var/log/php-fpm:rw
       # - /etc/localtime:/etc/localtime:ro
+    command: php /app/php-72/public/http.php
   php-fpm-56:
       build:
         context: ./php/php-fpm-56/
